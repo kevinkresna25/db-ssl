@@ -1,0 +1,18 @@
+# Docker / build
+*.log
+*.tmp
+.DS_Store
+
+# Cert & data (jangan commit ke repo)
+certs/*.pem
+data/
+
+# Kalau mau commit README di certs/, boleh whitelist:
+# !certs/README.md
+
+# Node / Composer / dll (kalau ada di proyek gabungan)
+node_modules/
+vendor/
+dist/
+.env
+.env.*

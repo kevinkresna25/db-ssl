@@ -1,0 +1,20 @@
+services:
+  postgres-ssl:
+    image: postgres:alpine
+    container_name: postgres-ssl
+    # ports:
+    #  - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./config/pg_hba.conf:/etc/postgresql/pg_hba.conf
+      - ./config/postgresql.conf:/etc/postgresql/postgresql.conf
+      - ./certs/cert.pem:/var/lib/postgresql/cert.pem:ro
+      - ./certs/key.pem:/var/lib/postgresql/key.pem:ro
+      - ./data/db:/var/lib/postgresql
+    command:
+        - postgres
+        - -c
+        - config_file=/etc/postgresql/postgresql.conf
+        - -c
+        - hba_file=/etc/postgresql/pg_hba.conf

@@ -1,0 +1,22 @@
+* text=auto eol=lf
+
+*.sh text eol=lf
+*.py text eol=lf
+*.java text eol=lf
+
+# Docker-related LF
+Dockerfile text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Windows batch CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.pdf binary
+*.jar binary
+*.exe binary
