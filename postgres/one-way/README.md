@@ -21,7 +21,7 @@ The script performs the following tasks:
 - Default certs dir: `postgres/one-way/certs`
 - Default data dir: `postgres/one-way/data`
 
-## Quick start (local)
+## Quick start
 
 1. Make the script executable and run it locally (you may need `sudo` to set
    ownership when running as non-root):
@@ -48,40 +48,6 @@ chmod +x init.sh
 - `CERT_SAN` (default: `DNS:localhost,IP:127.0.0.1`) — subjectAltName value added
   to the certificate.
 
-## Docker / docker-compose example
-
-When running PostgreSQL in a container, bind the generated files into the
-container and point Postgres to the certificate files. A minimal example in
-`docker-compose.yml`:
-
-```yaml
-services:
-  db:
-    image: postgres:alpine
-    volumes:
-      - ./data:/var/lib/postgresql/data
-      - ./certs/cert.pem:/var/lib/postgresql/cert.pem:ro
-      - ./certs/key.pem:/var/lib/postgresql/key.pem:ro
-    environment:
-      POSTGRES_PASSWORD: example
-    command: ["-c", "ssl=on", "-c", "ssl_cert_file=cert.pem", "-c", "ssl_key_file=key.pem"]
-    user: "70:70" # optional: run as UID:GID 70 (postgres:alpine)
-
-# If you run a Debian-based Postgres image, the postgres UID/GID is commonly 999.
-# You can override ownership using: POSTGRES_UID=999 POSTGRES_GID=999 ./init.sh
-```
-
-## PostgreSQL configuration
-
-In your `postgresql.conf` you should enable TLS and reference the certificate
-and key file names (paths inside the container):
-
-```conf
-ssl = on
-ssl_cert_file = 'cert.pem'
-ssl_key_file = 'key.pem'
-```
-
 ## Security notes and best practices
 
 - Do not commit private keys or certificates to source control. Add
@@ -93,19 +59,6 @@ ssl_key_file = 'key.pem'
   read-only into containers.
 - Consider using a proper secrets manager or Docker secrets for private keys
   in production environments.
-
-## Troubleshooting
-
-- If Postgres fails to start due to SSL errors, check the container's log
-  messages, verify the mounted paths, and ensure `ssl_cert_file` and
-  `ssl_key_file` values match the mounted filenames.
-- To regenerate certificates, remove the `certs/cert.pem` and
-  `certs/key.pem` files and re-run `./init.sh`.
-
-## Linting and quality
-
-- For additional safety, run `shellcheck` against `init.sh` and address any
-  recommendations (not included in this repo by default).
 
 ## Reference
 
