@@ -7,11 +7,12 @@ services:
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
+      - ./data/db:/var/lib/postgresql
       - ./config/pg_hba.conf:/etc/postgresql/pg_hba.conf
       - ./config/postgresql.conf:/etc/postgresql/postgresql.conf
       - ./certs/cert.pem:/var/lib/postgresql/cert.pem:ro
       - ./certs/key.pem:/var/lib/postgresql/key.pem:ro
-      - ./data/db:/var/lib/postgresql
+      - ./init-sql:/docker-entrypoint-initdb.d:ro
     command:
         - postgres
         - -c
